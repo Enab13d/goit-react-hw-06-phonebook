@@ -1,6 +1,27 @@
 import { Field, ContactsForm, Label, SubmitBtn } from './ContactForm.styled';
-import PropTypes from 'prop-types';
-export const ContactForm = ({ handleSubmit }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'features/contacts/contactsSlice';
+import { nanoid } from 'nanoid';
+
+export const ContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+  const handleSubmit = e => {
+    e.preventDefault();
+    const { name, number } = e.target.elements;
+    const value = name.value;
+    let id = nanoid();
+    const isContain = contacts.some(
+      contact => contact.name.toLowerCase() === value.toLowerCase()
+    );
+    if (isContain) {
+      return alert(`${value} is already in contacts.`);
+    }
+    const tel = number.value;
+    dispatch(addContact({ name: value, number: tel, id }));
+    e.target.reset();
+  };
+
   return (
     <ContactsForm onSubmit={handleSubmit}>
       <Label htmlFor="name">Name</Label>
@@ -24,8 +45,4 @@ export const ContactForm = ({ handleSubmit }) => {
       <SubmitBtn>Add Contact</SubmitBtn>
     </ContactsForm>
   );
-};
-
-ContactForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
 };

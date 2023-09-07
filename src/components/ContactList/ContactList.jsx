@@ -1,29 +1,46 @@
 import { List } from './ContactList.styled';
 import { Contact } from '../Contact';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export const ContactList = ({ contacts, handleDeleteBtnClick }) => (
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+
+  const getFoundContacts = () => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+  const filteredContacts = getFoundContacts();
+
+ return (
   <List>
-    {contacts.map(({ name, number, id }) => {
+    {filteredContacts.map(({ name, number, id }) => {
       return (
         <Contact
           key={id}
           id={id}
           name={name}
           number={number}
-          handleDeleteBtnClick={handleDeleteBtnClick}
         ></Contact>
       );
     })}
   </List>
-);
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  handleDeleteBtnClick: PropTypes.func.isRequired,
-};
+ )
+
+
+}
+
+  
+
+
+// ContactList.propTypes = {
+//   contacts: PropTypes.arrayOf(
+//     PropTypes.exact({
+//       name: PropTypes.string.isRequired,
+//       number: PropTypes.string.isRequired,
+//       id: PropTypes.string.isRequired,
+//     })
+//   ).isRequired,
+//   handleDeleteBtnClick: PropTypes.func.isRequired,
+// };

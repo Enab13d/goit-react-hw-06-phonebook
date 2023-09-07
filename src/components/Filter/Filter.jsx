@@ -1,13 +1,17 @@
 import { FilterField, FilterLabel } from './Filter.styled';
-import PropTypes from 'prop-types';
-export const Filter = ({ handleFilterChange, filter }) => {
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from 'features/filter/filterSlice';
+export const Filter = () => {
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
   return (
     <>
       <FilterLabel htmlFor="filter">Find contacts by name</FilterLabel>
-      <FilterField id="filter" onChange={handleFilterChange} value={filter} />
+      <FilterField
+        id="filter"
+        onChange={e => dispatch(setFilter(e.target.value))}
+        value={filter}
+      />
     </>
   );
-};
-Filter.propTypes = {
-  handleFilterChange: PropTypes.func.isRequired,
 };
