@@ -7,7 +7,7 @@ const persistConfig = {
   storage,
 };
 
-const initialState = {value: []};
+const initialState = { value: [] };
 
 export const contactsSlice = createSlice({
   name: 'contacts',
@@ -17,7 +17,9 @@ export const contactsSlice = createSlice({
       state.value.push(action.payload);
     },
     removeContact: (state, action) => {
-      const idx = state.value.find(contact => contact.id === action.payload.id);
+      const idx = state.value.findIndex(
+        contact => contact.id === action.payload
+      );
       state.value.splice(idx, 1);
     },
   },
