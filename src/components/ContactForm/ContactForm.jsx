@@ -1,19 +1,19 @@
 import { Field, ContactsForm, Label, SubmitBtn } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'features/contacts/contactsSlice';
+import { addContact, getContactsValue } from 'features/contacts/contactsSlice';
 import { nanoid } from 'nanoid';
 
 export const ContactForm = () => {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(getContactsValue);
   const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
     const { name, number } = e.target.elements;
     const value = name.value;
     let id = nanoid();
-    const isContain = contacts.some(
+    const isContain = contacts ? contacts.some(
       contact => contact.name.toLowerCase() === value.toLowerCase()
-    );
+    ) : null;
     if (isContain) {
       return alert(`${value} is already in contacts.`);
     }
